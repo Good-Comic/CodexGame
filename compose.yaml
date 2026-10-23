@@ -1,0 +1,34 @@
+services:
+  studio-api:
+    build:
+      context: ./studio
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      PROJECTS_ROOT: /projects
+    volumes:
+      - ./workspace:/projects
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/api/health', timeout=2)"
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
+    restart: unless-stopped
+
+  agent-canvas:
+    image: ghcr.io/openhands/agent-canvas:1.29.0
+    profiles:
+      - agent
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      AGENT_CANVAS_ALLOW_LAN_SESSION_KEY: "true"
+    volumes:
+      - ./workspace:/projects
+      - ./state:/home/openhands/.openhands
+    restart: unless-stopped
