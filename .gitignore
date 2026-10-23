@@ -4,3 +4,5 @@ state/
 *.key
 *.pem
 node_modules/
+__pycache__/
+*.pyc

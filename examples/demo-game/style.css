@@ -1,0 +1,4 @@
+:root { color-scheme: dark; font-family: system-ui, sans-serif; }
+body { display: grid; min-height: 100vh; margin: 0; place-items: center; background: #151b2b; }
+main { padding: 2rem; border: 1px solid #557; border-radius: .75rem; background: #202a40; }
+button, select { margin: 1rem; padding: .5rem; }

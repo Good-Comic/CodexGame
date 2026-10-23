@@ -1,14 +1,15 @@
 # Project Forge AI — 私人 AI 遊戲開發工廠（啟動包 v0.1）
 
 本包提供 **可啟動的自架 Agent 基礎環境**、Windows 操作腳本，以及分階段建造專屬遊戲工廠的 Agent 工作檔。
-**這不是完整產品**：目前透過 OpenHands Agent Canvas 提供真正的 AI coding agent 工作台；自訂 Studio 控制台、GitHub App 事件雙向同步、持續自動測試與多引擎預覽仍需依任務檔實作。
+**這不是完整產品或正式部署**：目前包含可執行的 loopback-only Studio foundation；OpenHands
+Agent Canvas、外部模型、GitHub App 與公開 webhook 仍須在私人主機配置並完成安全驗收。
 
 ## 目前能做什麼
-- 本機以 Docker Compose 啟動 OpenHands Agent Canvas，瀏覽器 http://127.0.0.1:8000/canvas
-- 使用介面配置 Agent 與模型後端（本地 Ollama 或可用的雲端 LLM API）；需依 OpenHands 版本和模型能力設定
-- 在隔離的 `workspace/` 中編修 Git 專案（仍須注意 agent 的執行權限）
+- 本機以 Docker Compose 啟動 Forge Studio，瀏覽器 http://127.0.0.1:8080/
+- 登錄受控 workspace project、切換模型設定、檢視 GitHub／task 狀態與 sandboxed game preview
+- OpenHands Agent Canvas 保留為選用 Compose profile：http://127.0.0.1:8000/canvas
 - 使用 Windows 腳本登入 GitHub 後複製專案、查詢同步狀態
-- 對既有 HTML/CSS/JS ES modules 遊戲以 Vite 開啟具熱更新的本機預覽
+- 對已登錄的 HTML/CSS/JS ES modules 專案提供隔離預覽；Vite HMR 仍待真正遊戲專案驗證
 - 把 `START_AGENT.md` 交給 Agent，依 `agent_tasks/` 逐段完成 Studio 平台
 
 ## 啟動（Windows 11 / PowerShell）
@@ -67,7 +68,9 @@ docker compose --profile agent up --detach --wait
 - [x] 提供 Docker Compose 啟動設定（尚未在使用者電腦實測）
 - [x] 提供 Windows 啟動／匯入／預覽指令
 - [x] 提供拆分 Agent 任務與驗收條件
+- [x] 雲端驗證 Studio Compose、Web、API、SQLite、sandbox preview 與自動測試
 - [ ] 實際部署到使用者電腦
 - [ ] GitHub App 已授權
-- [ ] 新 Studio UI 與多 Agent 排程已開發
+- [x] Studio UI 與單 project task 治理骨架已開發
+- [ ] Agent executor 與多 Agent 排程已連接
 - [ ] 即時遠端 webhook 已連上

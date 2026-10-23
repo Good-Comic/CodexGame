@@ -6,8 +6,22 @@ services:
       - "127.0.0.1:8080:8080"
     environment:
       PROJECTS_ROOT: /projects
+      DATABASE_PATH: /data/studio.db
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434/v1}
+      OPENAI_COMPATIBLE_BASE_URL: ${OPENAI_COMPATIBLE_BASE_URL:-}
+      PF_OPENAI_COMPATIBLE_API_KEY: ${PF_OPENAI_COMPATIBLE_API_KEY:-}
+      GITHUB_ALLOWED_REPOSITORY: ${GITHUB_ALLOWED_REPOSITORY:-Good-Comic/CodexGame}
+      GITHUB_WORK_BRANCH: ${GITHUB_WORK_BRANCH:-codex/project-forge-foundation}
+      PF_GITHUB_APP_ID: ${PF_GITHUB_APP_ID:-}
+      PF_GITHUB_APP_PRIVATE_KEY: ${PF_GITHUB_APP_PRIVATE_KEY:-}
+      PF_GITHUB_WEBHOOK_SECRET: ${PF_GITHUB_WEBHOOK_SECRET:-}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./workspace:/projects
+      - ./:/projects/ProjectForgeAI:ro
+      - ./examples/demo-game:/projects/preview-demo:ro
+      - ./state:/data
     healthcheck:
       test:
         - CMD
@@ -18,6 +32,23 @@ services:
       timeout: 3s
       retries: 12
       start_period: 5s
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,noexec,nosuid,nodev
+    cap_drop:
+      - ALL
+    cap_add:
+      - DAC_OVERRIDE
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 512m
+    cpus: 1.0
+    pids_limit: 128
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     restart: unless-stopped
 
   agent-canvas:
